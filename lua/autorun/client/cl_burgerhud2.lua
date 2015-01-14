@@ -11,7 +11,7 @@ local righttri = Material( "VGUI/Burger/RightTriangle" )
 local diamond = Material( "VGUI/Burger/Diamond" )
 local diamondstop = Material( "VGUI/Burger/DiamondStopper" )
 
-surface.CreateFont( "BurgerHUD2", {
+surface.CreateFont( "BurgerHUD2a", {
 	font = "roboto condensed", 
 	size = 60, 
 	weight = 0, 
@@ -28,8 +28,25 @@ surface.CreateFont( "BurgerHUD2", {
 	outline = false, 
 } )
 
+surface.CreateFont( "BurgerHUD2b", {
+	font = "roboto condensed", 
+	size = 64, 
+	weight = 0, 
+	blursize = 0, 
+	scanlines = 0, 
+	antialias = true, 
+	underline = false, 
+	italic = false, 
+	strikeout = false, 
+	symbol = false, 
+	rotary = false, 
+	shadow = true, 
+	additive = false, 
+	outline = false, 
+} )
 
 
+print("Loaded")
 
 function BurgerHUD2()
 
@@ -101,27 +118,27 @@ function BurgerHUD2()
 		local value = health
 		local max = 10
 		local xpos = x / 16
-		local ypos = y - y/16 - 32
+		local ypos = y - y/16 - 64
 		local xsize = 64
 		local ysize = 32
 		local xbonus = -20
 		local ybonus = 0
 		local center = false
 		local mat = pgram
-		local color = Color(255 - health*2.55,health*2.55,0,255)
+		local color = Color(255 - health*2.55,health*2.55,0,200)
 		HUDGenerateHealth(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,mat,color)
 		
 		local value = armor
 		local max = 11
 		local xpos = x / 16 - 24
-		local ypos = y - y/16 
+		local ypos = y - y/16
 		local xsize = 64
 		local ysize = 32
 		local xbonus = -17
 		local ybonus = 0
 		local center = false
 		local mat = pgram
-		local color = Color(0,armor*2.55,armor*2.55,255)
+		local color = Color(0,armor*2.55,armor*2.55,200)
 		HUDGenerateArmor(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,mat,color)
 
 		local value1 = ammo1
@@ -136,7 +153,6 @@ function BurgerHUD2()
 	end
 
 end
-
 
 hook.Add( "HUDPaint", "HUDPaint_DrawABox",  BurgerHUD2 )
 
@@ -153,13 +169,13 @@ function HUDGenerateAmmo(value1,value2,value3,xpos,ypos)
 		local percent = value1/value2
 		
 		
-		surface.SetDrawColor( Color(255,255 * percent,0,255) )
+		surface.SetDrawColor( Color(255,255 * percent,0,200) )
 		surface.SetMaterial( diamond )
 		surface.DrawTexturedRectRotated( xpos , ypos + bonus, 64*5*percent , 32*4 * percent, 0  )
 		
 		
-		draw.DrawText( value1 .. " / " .. value2 , "BurgerHUD2" , xpos, ypos, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
-		draw.DrawText( value3 , "BurgerHUD2" ,  xpos, ypos + 60, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
+		draw.DrawText( value1 .. " / " .. value2 , "BurgerHUD2a" , xpos, ypos, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
+		draw.DrawText( value3 , "BurgerHUD2a" ,  xpos, ypos + 60, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
 		
 	end
 	
@@ -186,6 +202,9 @@ function HUDGenerateHealth(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,
 		
 		surface.SetDrawColor( color )
 		surface.SetMaterial( chevarrow )
+		
+		
+		
 			
 		--local centermath = (xsize * max * 0.5) + (xbonus * max * 0.5) - xsize	
 			
@@ -195,10 +214,14 @@ function HUDGenerateHealth(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,
 			end
 		end
 			
+		
+	
+			
+			
 			
 	end
 
-
+	draw.DrawText( value, "BurgerHUD2b" , xpos + ((max/2)*xsize - xsize) + ((max/2)*xbonus - xbonus) + xsize/2 , ypos - 32 , Color(255,255,255,255) , TEXT_ALIGN_CENTER )
 
 
 end
@@ -234,8 +257,12 @@ function HUDGenerateArmor(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,m
 			end
 		end
 			
+			
+			
 	end
 
+	draw.DrawText( value, "BurgerHUD2b" , -8 + xpos + ((max/2)*xsize - xsize) + ((max/2)*xbonus - xbonus) + xsize/2 , ypos - 32 , Color(255,255,255,255) , TEXT_ALIGN_CENTER )
+	
 end
 
 
