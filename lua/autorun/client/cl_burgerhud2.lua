@@ -48,6 +48,99 @@ surface.CreateFont( "BurgerHUD2b", {
 
 print("Loaded")
 
+function OnSucessfullyLoaded() then
+	function GAMEMODE:HUDDrawTargetID()
+
+
+	end
+end
+
+
+hook.Add("OnGamemodeLoaded","Gamemode Loaded",OnSucessfullyLoaded)
+
+local fadetime = 0
+local update
+
+
+function CustomTargetID()
+		
+	local x = ScrW()
+	local y = ScrH()	
+	
+	local target = LocalPlayer():GetEyeTrace().Entity
+	
+	
+	if target:IsValid() then
+	
+		if not IsValid(update) then
+			if target:IsPlayer() then
+				update = target
+				fadetime = CurTime() + 5
+			end
+		elseif target ~= update then
+			if target:IsPlayer() then
+				update = target
+				fadetime = CurTime() + 5
+			end
+		elseif target == update then
+			if target:IsPlayer() then
+				fadetime = CurTime() + 5
+			end
+		end
+		
+	end
+	
+	if IsValid(update) then
+		if fadetime < CurTime() then
+			update = nil
+			fadetime = 0
+		end
+	end
+	
+	
+	
+	local max = 10
+	local xpos = x / 2
+	local ypos = y / 16
+	local xsize = 64
+	local ysize = 32
+	local xbonus = -20
+	local ybonus = 0
+	local center = false
+	local mat = pgram
+	local alpha = math.Clamp((fadetime - CurTime())*51, 0 , 255)
+	
+
+	
+	
+
+	if IsValid(update) then
+	
+		if update:IsBot() then
+			name = "African American (Level " .. update:Frags() .. ")"
+		else
+			name = update:Nick()
+		end
+	
+	
+	
+	
+	
+		draw.DrawText( name, "BurgerHUD2b" , xpos , ypos + 10 , Color(255,255,255,alpha) , TEXT_ALIGN_CENTER )
+	end
+	
+	if IsValid(update) then
+		HUDGenerateHealthTop(target,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,mat,alpha)
+	end
+	
+	
+end
+
+
+hook.Add("HUDDrawTargetID","Custom Target ID",CustomTargetID)
+
+
+
 function BurgerHUD2()
 
 	local x = ScrW()
@@ -223,6 +316,50 @@ function HUDGenerateHealth(value,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,
 
 	draw.DrawText( value, "BurgerHUD2b" , xpos + ((max/2)*xsize - xsize) + ((max/2)*xbonus - xbonus) + xsize/2 , ypos - 32 , Color(255,255,255,255) , TEXT_ALIGN_CENTER )
 
+
+end
+
+function HUDGenerateHealthTop(target,max,xpos,ypos,xsize,ysize,xbonus,ybonus,center,mat,alpha)
+
+	local value = update:Health()
+	
+
+
+	
+
+	if value > 0 then
+	
+		print(alpha)
+	
+		surface.SetDrawColor( Color(255,255,255,alpha) )
+		surface.SetMaterial( diamond )
+		surface.DrawTexturedRectRotated( xpos , ypos, xsize , ysize, 0  )
+		
+		
+		surface.SetMaterial( diamondstop )
+		surface.DrawTexturedRectRotated( xpos - ((max+1)*xsize - xsize) - ((max+1)*xbonus - xbonus) - xsize/2 , ypos, xsize , ysize, 0  )
+		surface.DrawTexturedRectRotated( xpos + ((max+1)*xsize - xsize) + ((max+1)*xbonus - xbonus) + xsize/2 , ypos, xsize , ysize, 180  )
+		
+		
+		surface.SetDrawColor( Color(255,0,0,alpha) )
+		surface.SetMaterial( chevarrow )
+			
+		--local centermath = (xsize * max * 0.5) + (xbonus * max * 0.5) - xsize	
+			
+		for i=0, max do
+			if i*(100/max) < value then
+				surface.DrawTexturedRectRotated( xpos + (i*xsize) + (i*xbonus) + xsize/2 , ypos, xsize , ysize, 0  )
+			end
+		end
+		
+		for i=0, max do
+			if i*(100/max) < value then
+				surface.DrawTexturedRectRotated( xpos + (-i*xsize) + (-i*xbonus) - xsize/2 , ypos, xsize , ysize, 180  )
+			end
+		end	
+			
+			
+	end
 
 end
 
