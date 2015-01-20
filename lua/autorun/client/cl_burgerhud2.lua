@@ -48,7 +48,7 @@ surface.CreateFont( "BurgerHUD2b", {
 
 print("Loaded")
 
-function OnSucessfullyLoaded() then
+function OnSucessfullyLoaded()
 	function GAMEMODE:HUDDrawTargetID()
 
 
@@ -116,11 +116,11 @@ function CustomTargetID()
 
 	if IsValid(update) then
 	
-		if update:IsBot() then
-			name = "African American (Level " .. update:Frags() .. ")"
-		else
+		--if update:IsBot() then
+		--	name = "African American (Level " .. update:Frags() .. ")"
+		--else
 			name = update:Nick()
-		end
+		--end
 	
 	
 	
@@ -329,7 +329,7 @@ function HUDGenerateHealthTop(target,max,xpos,ypos,xsize,ysize,xbonus,ybonus,cen
 
 	if value > 0 then
 	
-		print(alpha)
+		--print(alpha)
 	
 		surface.SetDrawColor( Color(255,255,255,alpha) )
 		surface.SetMaterial( diamond )
