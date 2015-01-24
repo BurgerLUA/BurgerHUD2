@@ -13,7 +13,7 @@ local diamondstop = Material( "VGUI/Burger/DiamondStopper" )
 
 surface.CreateFont( "BurgerHUD2a", {
 	font = "roboto condensed", 
-	size = 60, 
+	size = 40, 
 	weight = 0, 
 	blursize = 0, 
 	scanlines = 0, 
@@ -102,9 +102,9 @@ function CustomTargetID()
 	local max = 10
 	local xpos = x / 2
 	local ypos = y / 16
-	local xsize = 64
-	local ysize = 32
-	local xbonus = -20
+	local xsize = 64 * 0.75
+	local ysize = 32 * 0.75
+	local xbonus = -20 * 0.75
 	local ybonus = 0
 	local center = false
 	local mat = pgram
@@ -116,17 +116,25 @@ function CustomTargetID()
 
 	if IsValid(update) then
 	
-		--if update:IsBot() then
-		--	name = "African American (Level " .. update:Frags() .. ")"
-		--else
-			name = update:Nick()
-		--end
+		name = update:Nick()
+
+		local text
+		
+		if update:GetNWInt("KTKills",0) ~= 0 then
+			local kills = update:GetNWInt("KTKills",0)
+			local deaths = update:GetNWInt("KTDeaths",0)
+			local rank = math.floor( (kills/deaths) * kills/10 ) + 1
+			
+			text = name .. " (Rank " .. rank .. ")"
 	
-	
-	
-	
-	
-		draw.DrawText( name, "BurgerHUD2b" , xpos , ypos + 10 , Color(255,255,255,alpha) , TEXT_ALIGN_CENTER )
+		else
+		
+			text = name
+		
+		end
+
+		draw.DrawText( text, "BurgerHUD2a" , xpos , ypos + 10 , Color(255,255,255,alpha) , TEXT_ALIGN_CENTER )
+		
 	end
 	
 	if IsValid(update) then
@@ -267,8 +275,8 @@ function HUDGenerateAmmo(value1,value2,value3,xpos,ypos)
 		surface.DrawTexturedRectRotated( xpos , ypos + bonus, 64*5*percent , 32*4 * percent, 0  )
 		
 		
-		draw.DrawText( value1 .. " / " .. value2 , "BurgerHUD2a" , xpos, ypos, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
-		draw.DrawText( value3 , "BurgerHUD2a" ,  xpos, ypos + 60, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
+		draw.DrawText( value1 .. " / " .. value2 , "BurgerHUD2b" , xpos, ypos, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
+		draw.DrawText( value3 , "BurgerHUD2b" ,  xpos, ypos + 60, Color(255,255,255,255) , TEXT_ALIGN_CENTER )
 		
 	end
 	
